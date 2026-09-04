@@ -145,7 +145,7 @@ export default {
           throw new Error('jobspipe: 401 — JOBSPIPE_API_KEY is missing or invalid (keys look like jp_live_...)');
         }
         if (status === 402) {
-          throw new Error('jobspipe: 402 — monthly job quota exhausted; see https://jobspipe.dev/pricing');
+          throw new Error('jobspipe: 402 — this key has used its monthly job allowance; it resets next cycle');
         }
         if (status === 429) {
           const retry = err?.retryAfter ? ` (retry after ${err.retryAfter}s)` : '';

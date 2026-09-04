@@ -9,12 +9,17 @@ const SANDBOX = 'https://api.jobspipe.dev/v1/sandbox/jobs/search';
 
 // Stand-in for career-ops's guarded ctx.fetchJson. Redirects to the sandbox so
 // no key is needed; mirrors the real one's throw-on-non-2xx contract.
+//
+// This is the HOST side of the contract, not plugin code: it exists to supply
+// the ctx that career-ops would supply. The plugin itself never touches a
+// global — it egresses only through ctx.fetchJson, so the allowedHosts guard
+// applies in real use. globalThis.fetch is explicit here for that reason.
 let sentPayload = null;
 const ctx = {
   env: { JOBSPIPE_API_KEY: 'jp_live_sandbox_dummy' },
   async fetchJson(_url, opts) {
     sentPayload = JSON.parse(opts.body);
-    const res = await fetch(SANDBOX, { method: 'POST', headers: opts.headers, body: opts.body });
+    const res = await globalThis.fetch(SANDBOX, { method: 'POST', headers: opts.headers, body: opts.body });
     if (!res.ok) {
       const err = new Error(`HTTP ${res.status}`);
       err.status = res.status;

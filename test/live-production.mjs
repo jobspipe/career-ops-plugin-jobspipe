@@ -6,10 +6,12 @@ import plugin from '../index.mjs';
 const key = process.env.JOBSPIPE_API_KEY;
 if (!key) { console.log('- live-production skipped (no JOBSPIPE_API_KEY)'); process.exit(0); }
 
+// Host-side stand-in for career-ops's guarded ctx.fetchJson (see the note in
+// live-sandbox.mjs). The plugin egresses only through ctx.fetchJson.
 const ctx = {
   env: { JOBSPIPE_API_KEY: key },
   async fetchJson(url, opts) {
-    const res = await fetch(url, { method: opts.method, headers: opts.headers, body: opts.body });
+    const res = await globalThis.fetch(url, { method: opts.method, headers: opts.headers, body: opts.body });
     if (!res.ok) { const e = new Error(`HTTP ${res.status}`); e.status = res.status; throw e; }
     return res.json();
   },

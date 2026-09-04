@@ -119,5 +119,5 @@ Each result maps to a `Job` record:
 | Error | Meaning |
 |---|---|
 | `401` | `JOBSPIPE_API_KEY` missing or invalid — keys look like `jp_live_...` |
-| `402` | Monthly job quota exhausted — see <https://jobspipe.dev/pricing> |
+| `402` | This key has used its monthly job allowance; it resets next cycle |
 | `429` | Per-second rate limit — reduce concurrent scans |
