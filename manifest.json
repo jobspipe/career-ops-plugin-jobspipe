@@ -1,0 +1,13 @@
+{
+  "id": "jobspipe",
+  "name": "career-ops-plugin-jobspipe",
+  "version": "0.1.0",
+  "apiVersion": 1,
+  "description": "JobsPipe API provider — normalized job postings deduplicated across 30+ ATS and job-board sources, with title/skill/country/seniority/remote filters.",
+  "hooks": ["provider"],
+  "requiredEnv": ["JOBSPIPE_API_KEY"],
+  "allowedHosts": ["api.jobspipe.dev"],
+  "skill": "skill.md",
+  "humanInTheLoop": true,
+  "homepage": "https://github.com/jobspipe/career-ops-plugin-jobspipe"
+}
