@@ -114,6 +114,31 @@ Each result maps to a `Job` record:
 | `company` | `company` (object shape tolerated, degrades to `.name`) |
 | `location` | `location` |
 
+## Market brief helper
+
+`_brief.mjs` is a standalone helper (the `_` prefix keeps it out of plugin
+discovery). Run it directly to summarise what live postings mention and pay,
+compared against `cv.md`:
+
+```bash
+node plugins.local/jobspipe/_brief.mjs --skill rust --remote --sample 100 --md brief.md --svg brief.svg
+```
+
+| Flag | Meaning |
+|---|---|
+| `--skill <slug>` | technology slug, repeatable (`skills_or`) |
+| `--title <text>` | job title, repeatable (`job_title_or`) |
+| `--country <ISO2>` | repeatable (`job_country_code_or`) |
+| `--seniority <level>` | repeatable (`job_seniority_or`) |
+| `--remote` | remote roles only |
+| `--days N` | posting age, default 14 |
+| `--sample N` | postings to analyse, default 100 — **costs N credits** |
+| `--cv <path>` | CV to compare against, default `cv.md` at the career-ops root |
+| `--md` / `--svg` / `--json` | write a report, a chart, or raw stats |
+
+It reads `JOBSPIPE_API_KEY` from the career-ops `.env`. Present its output as
+"what postings mention", never as "what the user must learn".
+
 ## Troubleshooting
 
 | Error | Meaning |

@@ -50,11 +50,43 @@ tracked_companies:
 
 Full configuration reference: [`skill.md`](./skill.md).
 
+## Market brief
+
+Beyond feeding the scanner, the plugin ships a standalone helper that answers
+a different question: **what do live postings in my niche mention, what do
+they pay, and where does my `cv.md` fall short?**
+
+```bash
+node plugins.local/jobspipe/_brief.mjs --skill rust --remote
+node plugins.local/jobspipe/_brief.mjs --title "platform engineer" --country US --days 7
+node plugins.local/jobspipe/_brief.mjs --skill rust --md brief.md --svg brief.svg
+```
+
+It samples the newest postings matching your filters (default 100), then reports:
+
+- the skills mentioned alongside yours, as a share of postings, each marked
+  ✓ / ✗ against your `cv.md` (aliases like `k8s` → `kubernetes` are handled)
+- salary P25 / P50 / P75, overall **and per seniority level**, from postings
+  that carry a parsed range
+- seniority mix, which boards the roles came from, and which employers are
+  hiring — aggregators are excluded from that last list so it stays honest
+- `--md` writes a Markdown report, `--svg` writes a bar chart you can drop
+  into a post
+
+Nothing but the search filters leaves your machine; `cv.md` is read locally
+for the comparison. One credit is one job returned, so `--sample 100` costs
+100 credits — the script says so before it spends them.
+
+Two things to read it correctly: **postings are wishlists**, so a skill's
+share means "mentioned", not "required"; and the sample is the newest N of
+the pool, not a random draw, so don't quote it as a market-wide census.
+
 ## Tests
 
 ```bash
 node test/smoke.mjs         # zero-network: hooks match the manifest
 node test/live-sandbox.mjs  # live: maps a real JobsPipe response, no API key needed
+node test/brief.mjs         # zero-network: market-brief aggregation, cv matching, renderers
 ```
 
 `live-sandbox.mjs` runs against JobsPipe's public sandbox endpoint, so it
